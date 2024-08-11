@@ -32,7 +32,7 @@ class PressOss():
     print("image_name: " + image_name)
 
     # # Upload
-    self.bucket.put_object_from_file('press/' + image_name, image_path)
+    return self.bucket.put_object_from_file('press/' + image_name, image_path)
 
 if __name__ == "__main__":
   press_oss = PressOss()

@@ -1,7 +1,12 @@
 # 配置环境变量；如果您已经提前将api-key提前配置到您的运行环境中，可以省略这个步骤
 import os
-os.environ['DASHSCOPE_API_KEY']=''
-os.environ['AMAP_TOKEN']=''
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+os.environ['DASHSCOPE_API_KEY'] = os.getenv('DASHSCOPE_API_KEY') 
+os.environ['AMAP_TOKEN'] = os.getenv('AMAP_TOKEN') 
 
 # 选用RolePlay 配置agent
 from modelscope_agent.agents.role_play import RolePlay  # NOQA
