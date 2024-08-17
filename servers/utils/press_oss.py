@@ -30,8 +30,6 @@ class PressOss():
     tmp_token = image_path.split('/')   
     image_name = tmp_token[len(tmp_token) - 1]
 
-    print("image_name: " + image_name)
-
     # # Upload
     result = self.bucket.put_object_from_file('press/' + image_name, image_path, headers={'x-oss-object-acl': 'public-read'})
     # print(result)

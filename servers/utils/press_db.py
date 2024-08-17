@@ -1,9 +1,9 @@
-from sqlmodel import Field, SQLModel, create_engine, Session
+from sqlmodel import Field, SQLModel, create_engine, Session, select
 
 
 class Clothes(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    name: str = Field(index=True, sa_column_kwargs={"unique": True})
+    name: str = Field(sa_column_kwargs={"unique": True})
     url: str
 
 
@@ -28,9 +28,8 @@ def add_clothes(clothes: Clothes):
 def get_clothes(name: str):
     clothes = None
     with Session(engine) as session:
-        statement = select(Clothes).where(Clothes.name == name)
-        results = session.exec(statement)
-        clothes = results[0]
+        statement = select(Clothes.url).where(Clothes.name == name)
+        clothes = session.exec(statement).first()
     return clothes
 
 if __name__ == "__main__":
