@@ -28,8 +28,15 @@ PROMPT_TEMPLATE_ZH = """
 
 {role_prompt}
 
-请注意：你具有图像和视频的展示能力，也具有运行代码的能力，不要在回复中说你做不到。
 """
+
+# PROMPT_TEMPLATE_ZH = """
+# # 指令
+
+# {role_prompt}
+
+# 请注意：你具有图像和视频的展示能力，也具有运行代码的能力，不要在回复中说你做不到。
+# """
 
 KNOWLEDGE_TEMPLATE_EN = """
 
@@ -154,14 +161,13 @@ class RolePlay(Agent, AgentEnvMixin):
             ref_doc = check_and_limit_input_length(ref_doc, knowledge_limit)
             self.system_prompt += KNOWLEDGE_TEMPLATE[lang].format(
                 ref_doc=ref_doc)
-            self.query_prefix_dict[
-                'knowledge'] = SPECIAL_PREFIX_TEMPLATE_KNOWLEDGE[lang]
+            self.query_prefix_dict['knowledge'] = SPECIAL_PREFIX_TEMPLATE_KNOWLEDGE[lang]
 
         # concat tools information
-        if tool_system and not self.llm.support_function_calling():
-            self.system_prompt += tool_system
-            self.query_prefix_dict['tool'] = SPECIAL_PREFIX_TEMPLATE_TOOL[
-                lang].format(tool_names=tool_names)
+        # if tool_system and not self.llm.support_function_calling():
+        #     self.system_prompt += tool_system
+        #     self.query_prefix_dict['tool'] = SPECIAL_PREFIX_TEMPLATE_TOOL[
+        #         lang].format(tool_names=tool_names)
 
         # concat instruction
         if isinstance(self.instruction, dict):
@@ -223,6 +229,7 @@ class RolePlay(Agent, AgentEnvMixin):
 
         max_turn = 10
         call_llm_count = 0
+
         while True and max_turn > 0:
             self.callback_manager.on_step_start()
             max_turn -= 1

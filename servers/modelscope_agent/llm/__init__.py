@@ -7,6 +7,7 @@ from .ollama import OllamaLLM
 from .openai import OpenAi
 from .vllm import VllmLLM
 from .zhipu import ZhipuLLM
+from .yuan import YuanLLM
 
 
 def get_chat_model(model: str, model_server: str, **kwargs) -> BaseChatModel:
@@ -17,6 +18,7 @@ def get_chat_model(model: str, model_server: str, **kwargs) -> BaseChatModel:
     """
     model_type = re.split(r'[-/_]', model)[0]  # parser qwen / gpt / ...
     registered_model_id = f'{model_server}_{model_type}'
+    
     if registered_model_id in LLM_REGISTRY:  # specific model from specific source
         return LLM_REGISTRY[registered_model_id](model, model_server, **kwargs)
     elif model_server in LLM_REGISTRY:  # specific source
@@ -27,5 +29,5 @@ def get_chat_model(model: str, model_server: str, **kwargs) -> BaseChatModel:
 
 __all__ = [
     'LLM_REGISTRY', 'BaseChatModel', 'OpenAi', 'DashScopeLLM', 'QwenChatAtDS',
-    'ModelScopeLLM', 'ModelScopeChatGLM', 'ZhipuLLM', 'OllamaLLM', 'VllmLLM'
+    'ModelScopeLLM', 'ModelScopeChatGLM', 'ZhipuLLM', 'OllamaLLM', 'VllmLLM', 'YuanLLM'
 ]

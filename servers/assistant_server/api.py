@@ -53,6 +53,7 @@ async def upload(request: ChatRequest):
         import traceback
         print(
             f'The error is {e}, and the traceback is {traceback.format_exc()}')
-        return create_resp_msg(
-            status_code=400,
-            message=f"Failed to execute tool '{app.tool_name}' with error {e}")  
+        # return create_resp_msg(
+        #     status_code=400,
+        #     message=f"Failed to execute tool '{app.tool_name}' with error {e}")  
+        
