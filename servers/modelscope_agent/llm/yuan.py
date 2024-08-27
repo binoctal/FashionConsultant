@@ -111,11 +111,13 @@ class YuanLLM(BaseChatModel):
     def build_raw_prompt(self, messages: list):
         prompt = ''
         # messages.append({'role': 'assistant', 'content': ''})
-        im_start = '<|im_start|>'
-        im_end = '<|im_end|>'
+        im_start = '<seq>'
+        im_end = '<eod>'
+        # im_start = '<|im_start|>'
+        # im_end = '<|im_end|>'
         if messages[0]['role'] == 'system':
             sys = messages[0]['content']
-            system_prompt = f'{im_start}system:\n{sys}{im_end}'
+            system_prompt = f'{im_start}system:忘记之前的所有内容,请严格遵守接下来我要说的话\n{sys}{im_end}'
         else:
             system_prompt = f'{im_start}system\nYou are a helpful assistant.{im_end}'
 
@@ -152,6 +154,8 @@ class YuanLLM(BaseChatModel):
              stop: Optional[List[str]] = None,
              stream: bool = False,
              **kwargs) -> Union[str, Iterator[str]]:
+        
+        print('[xin]: chat prompt: ', prompt)
 
         prompt += "<sep>"
         # 编码输入
@@ -173,6 +177,7 @@ class YuanLLM(BaseChatModel):
 
         # 使用模型进行生成
         outputs = model.generate(**inputs, max_length=4000, num_return_sequences=1)
+        # outputs = model.generate(**inputs, max_length=4000, num_return_sequences=1, temperature=0.01, top_p=0.95,do_sample=True)
         # 解码输出
         response = tokenizer.decode(outputs[0], skip_special_tokens=True)
         output = tokenizer.decode(outputs[0])
@@ -232,7 +237,9 @@ class YuanLammaLLM(CustomLLM):
         # 完成函数
         # print("完成函数")
 
-        pdb.set_trace()
+        print('[xin]: prompt: ', prompt)
+
+        print('+'*50)
 
         # 编码输入
         inputs = tokenizer(prompt, return_tensors="pt")
@@ -258,8 +265,8 @@ class YuanLammaLLM(CustomLLM):
         outputs = model.generate(input_ids=input_ids,
                                       attention_mask=attention_mask,
                                       max_length=self.num_output,  # 输出的最大长度
-                                      num_return_sequences=1,  # 返回序列的数量
-                                      no_repeat_ngram_size=2,  # 不重复 n-gram 的大小
+                                      do_sample=False,
+
         )
 
         response = tokenizer.decode(outputs[0])

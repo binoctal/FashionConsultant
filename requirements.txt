@@ -10,7 +10,10 @@ PyYAML==6.0.1
 streamlit==1.36.0
 sympy==1.13.1
 tiktoken==0.7.0
-torch==2.4.0
+tb-nightly
+torch==2.3.0 
+torchvision==0.18.0 
+torchaudio==2.3.0
 transformers==4.42.4
 zhipuai==1.0.7
 dashscope>=1.20.1
@@ -44,3 +47,4 @@ uvicorn
 fastapi
 sqlmodel
 modelscope_agent
+tf_keras

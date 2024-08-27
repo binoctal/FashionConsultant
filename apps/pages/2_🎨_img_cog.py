@@ -8,6 +8,9 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
+uploaded_file = None
+img_url = None
+
 add_selectbox = st.sidebar.selectbox(
             "图片来源",
             ("本地上传",)
@@ -15,14 +18,15 @@ add_selectbox = st.sidebar.selectbox(
 
 if add_selectbox == '本地上传':
     uploaded_file = st.sidebar.file_uploader(label='上传图片')
+    print('test001....')
 else:
     img_url = st.sidebar.text_input('图片url')
 
-uploaded_file = None
-img_url = None
-
 # 请求结果
 img_base64 = None
+
+print('[xin]: uploaded_file: ', uploaded_file)
+
 if uploaded_file:
     st.image(uploaded_file, caption='本地图片')
 
@@ -40,6 +44,8 @@ if uploaded_file:
     now = datetime.now()
     now_str = now.strftime("%Y%m%d%H%M%S") 
     file_name = image_dir +'/initial/' + now_str + '.' + uploaded_file.type.split('/')[1]
+
+    print('[xin]: file_name: ', file_name)
 
     with open(file_name,"wb") as f: 
         f.write(uploaded_file.getbuffer())

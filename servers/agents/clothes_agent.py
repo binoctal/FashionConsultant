@@ -22,6 +22,7 @@ class ClothesAgent():
 
     @classmethod
     def run(cls, image_path: str):
+        print('xin]: image_path: ', image_path)
         if len(image_path) == 0:
             return
         
@@ -29,11 +30,13 @@ class ClothesAgent():
 
         response = bot.run(f'[上传文件{image_path}],描述这张照片')
 
+        print('[xin]: response: ', response)
+
         text = ''
         for chunk in response:
             text += chunk
 
-        # print(text)
+        print('[xin]: text: ', text)
 
         data_dir = 'data'
         if not os.path.exists(data_dir):
@@ -43,8 +46,8 @@ class ClothesAgent():
         # pattern = r'Answer:([^Answer:]*)'
         # result = re.findall(pattern, text)
         result = text
-        # print(result)
+        print('[xin]: result: ', result)
 
         if len(result) > 0:
             with open(data_dir + '/clothes_data.txt',"a", encoding='utf-8') as f: 
-                f.write(result + '\r\n')     
+                f.write(result + '\n')     

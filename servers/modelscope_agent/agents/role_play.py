@@ -16,19 +16,29 @@ from modelscope_agent.utils.tokenization_utils import count_tokens
 from modelscope_agent.utils.utils import check_and_limit_input_length
 
 KNOWLEDGE_TEMPLATE_ZH = """
-
 # 知识库
-
 {ref_doc}
-
 """
 
 PROMPT_TEMPLATE_ZH = """
 # 指令
-
 {role_prompt}
-
 """
+
+# KNOWLEDGE_TEMPLATE_ZH = """
+
+# # 知识库
+
+# {ref_doc}
+
+# """
+
+# PROMPT_TEMPLATE_ZH = """
+# # 指令
+
+# {role_prompt}
+
+# """
 
 # PROMPT_TEMPLATE_ZH = """
 # # 指令
@@ -154,15 +164,6 @@ class RolePlay(Agent, AgentEnvMixin):
         if len(append_files) > 0 and 'code_interpreter' in self.function_map:
             use_ref_doc = False
 
-        # concat knowledge
-        if ref_doc and use_ref_doc:
-            knowledge_limit = kwargs.get('knowledge_limit',
-                                         os.getenv('KNOWLEDGE_LIMIT', 4000))
-            ref_doc = check_and_limit_input_length(ref_doc, knowledge_limit)
-            self.system_prompt += KNOWLEDGE_TEMPLATE[lang].format(
-                ref_doc=ref_doc)
-            self.query_prefix_dict['knowledge'] = SPECIAL_PREFIX_TEMPLATE_KNOWLEDGE[lang]
-
         # concat tools information
         # if tool_system and not self.llm.support_function_calling():
         #     self.system_prompt += tool_system
@@ -181,6 +182,15 @@ class RolePlay(Agent, AgentEnvMixin):
             self.role_name = ''
             self.system_prompt += PROMPT_TEMPLATE[lang].format(
                 role_prompt=self.instruction)
+            
+        # concat knowledge
+        if ref_doc and use_ref_doc:
+            knowledge_limit = kwargs.get('knowledge_limit',
+                                         os.getenv('KNOWLEDGE_LIMIT', 4000))
+            ref_doc = check_and_limit_input_length(ref_doc, knowledge_limit)
+            self.system_prompt += KNOWLEDGE_TEMPLATE[lang].format(
+                ref_doc=ref_doc)
+            self.query_prefix_dict['knowledge'] = SPECIAL_PREFIX_TEMPLATE_KNOWLEDGE[lang]
 
         self.query_prefix = ''
         self.query_prefix += self.query_prefix_dict['role']
