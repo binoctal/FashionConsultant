@@ -2,6 +2,7 @@
 import requests
 import streamlit as st
 
+
 # 初次运行时，session_state中没有"messages"，需要创建一个空列表
 if "messages" not in st.session_state:
     st.session_state["messages"] = []
